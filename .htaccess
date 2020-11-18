@@ -1,0 +1,7 @@
+Options All -Indexes
+
+RewriteEngine On
+
+ErrorDocument 404 /modulos/error404.php
+
+RewriteRule ^([a-zA-Z0-9/]+)$ index.php?ruta=$1
