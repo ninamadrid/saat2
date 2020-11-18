@@ -115,40 +115,49 @@ $(document).ready(function(){
         $("#cantInven").val(existencia),
         $("#precioInven").val(costo)
         
+        
         //mostrar el modal
         $('#modalEditarProducto').modal('show');
+        
         $('.btnEditarBD').on('click', async function() {
+            var IdProducto = Number(idproducto);             
+            console.log('Estoy dentro del if', IdProducto);
             const formData = new FormData();
-            formData.append('id_inventario',$("#idproducto").val());
+            formData.append('id_inventario', IdProducto);
             formData.append('nombre_inventario',$("#nombreInven").val());
-            formData.append('existencia', $("#cantInven").val());
-            formData.append('costo',$("#precioInven").val());
-            console.log( $("#idproducto").val(), $("#nombreInven").val(),$("#cantInven").val());
-            //console.log(formData);
+            formData.append('existencia', Number($("#cantInven").val()));
+            formData.append('costo', Number($("#precioInven").val()));
+            //console.log(IdProducto, $("#nombreInven").val(), $("#cantInven").val(), $("#precioInven").val())
+            //console.log( 'El ID a enviar es: '+Number(idproducto);
+            
             const resp = await axios.post('./controlador/api.php?action=actualizarProducto', formData);
             const data = resp.data;
-
+            
             if(data.error){
-                return swal("Error", data.msj, "error");
-            }
-
-            return swal("Exito!", data.msj, "success").then((value) => {
-                    if (value){
-                        // Se limpia el formulario
-                        $("#nombreInventa").val('');
-                        $("#cantInven").val('');
-                        $("#precioInve").val('');
-                        
-                    }
-                }).then(() =>{ 
-                    location.reload();
+                return swal("Error", data.msj, "error", {
+                    timer:3000,
+                    buttons:false
                 });
-    
-        })
+            } else{
+                $('#modalEditarProducto').modal('hide');
+                return swal("Exito!", data.msj, "success", {
+                    timer:3000,
+                    buttons:false
+                }).then(() => {
+                    // Se limpia el formulario
+                    console.log('Ya se cerro el alert');
+                    $("#nombreInventa").val('');
+                    $("#cantInven").val('');
+                    $("#precioInve").val('');
+                    location.reload(); 
+                })
+            }
+                
+        });
         
     })
+
     
-    $('#modalEditarProducto').modal('hide');
     
     
            

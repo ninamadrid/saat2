@@ -82,27 +82,32 @@ switch($action){
             }
         break;
         case 'actualizarProducto':
-            if(isset($_POST['id_inventario'] ) && isset($_POST['nombre_articulo']) && isset($_POST['existencia']) && isset($_POST['costo'])){
-                $id_inventario = $_POST['id_inventario'];
+            if(  isset($_POST['id_inventario'])
+                && isset($_POST['nombre_inventario']) && isset($_POST['existencia']) && isset($_POST['costo'])
+            ){
+               $id_inventario = $_POST['id_inventario'];
                 $nombreP = $_POST['nombre_inventario'];
                 $existenciaP = $_POST['existencia'];
                 $costoP = $_POST['costo'];
-            
-                $sql = "UPDATE tbl_inventario SET nombre_articulo = ".$nombreP.", existecia = ".$existenciaP.", costo=".$costoP." WHERE id_inventario = ".$id_inventario;
+                //echo ($id_inventario);
+                $sql = "UPDATE tbl_inventario 
+                        SET nombre_articulo='$nombreP', existencia=$existenciaP, costo=$costoP
+                        WHERE id_inventario=".$id_inventario;
                 $resultado = $conn->query($sql);
+                
                 if ($resultado == 1) {
                     $res['msj'] = "Producto Edito  Correctamente";
                 } else {
-                    $res['msj'] = "Se produjo un error al momento de Editar el producto";
+                    $res['msj'] = "Se produjo un error al momento de Editar el producto ";
                     $res['error'] = true;
                 }
                 
             }else{
-                
-                $res['msj'] = "No se envió el id del producto a Editar";
+                //print_r($id_inventario);
+                $res['msj'] = "Las variables no estan definidas";
                 $res['error'] = true;
+                
             }
-            
             
         break;
         
